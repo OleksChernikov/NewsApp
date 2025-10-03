@@ -31,7 +31,6 @@ export default function ExchangeRates() {
 
   if (loading) return <div>Loading...</div>;
 
-  // Обрані валюти
   const selectedCurrencies = ["USD", "EUR", "UAH", "CZK"];
 
   return (
