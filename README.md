@@ -1,9 +1,5 @@
 # React + Vite = News App
 
-🚀 **Demo link**: []
-
----
-
 ## 📌 Project description
 This project is built with **React + Vite**. It provides a modern interface for browsing the latest news and checking currency exchange rates in real time.  
 
@@ -25,3 +21,12 @@ Features:
 - **CSS (BEM methodology)**
 - **ExchangeRate API**
 - **GNews API**
+
+---
+
+
+## How to start
+- git clone https://github.com/OleksChernikov/NewsApp.git
+- npm install
+- npm run dev
+
