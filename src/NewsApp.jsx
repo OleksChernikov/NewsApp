@@ -24,41 +24,6 @@ const getNews = async ({ q, category }, apiKey) => {
 };
 
 
-// function ExchangeRates() {
-//   const [rates, setRates] = useState({});
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const API_KEY = "aa06261284f56e5d9e574313";
-//     fetch(`https://v6.exchangerate-api.com/v6/${API_KEY}/latest/USD`)
-//       .then(res => res.json())
-//       .then(data => {
-//         setRates(data.conversion_rates);
-//         setLoading(false);
-//       })
-//       .catch(err => console.error(err));
-//   }, []);
-
-//   if (loading) return <div>Loading...</div>;
-
-//   // Обрані валюти
-//   const selectedCurrencies = ["USD", "EUR", "UAH", "CZK"];
-
-//   return (
-//     <div>
-//       <h2>Selected Rates:</h2>
-//       <div>
-//         {selectedCurrencies.map((cur, i) => (
-//           <span key={cur}>
-//             {cur}: {rates[cur]}
-//             {i < selectedCurrencies.length - 1 ? " | " : ""}
-//           </span>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-
 export default function NewsApp() {
   const API_KEY = import.meta.env.VITE_GNEWS_API_KEY;
   const [articles, setArticles] = useState([]);
