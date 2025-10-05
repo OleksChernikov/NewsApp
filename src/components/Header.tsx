@@ -1,6 +1,7 @@
+import React from "react";
 import videoFile from "../assets/854518-hd_1920_1080_30fps.mp4";
 
-export default function Header() {
+const Header: React.FC = () => {
   return (
     <header className="site__header header">
       <div className="header__video-wrap">
@@ -19,4 +20,6 @@ export default function Header() {
       </div>
     </header>
   );
-}
+};
+
+export default Header;

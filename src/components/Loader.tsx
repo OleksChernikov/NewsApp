@@ -1,7 +1,11 @@
-export default function Loader() {
+import { type FC } from "react";
+
+const Loader: FC = () => {
   return (
     <div className="loader">
       <div className="spinner"></div>
     </div>
   );
-}
+};
+
+export default Loader;

@@ -1,4 +1,6 @@
-export default function NewsCard({ article, onReadMore }) {
+import { type Props } from "../types/interfaces.ts";
+
+export default function NewsCard({ article, onReadMore }: Props) {
   return (
     <article className="news-card">
       {article.image && (

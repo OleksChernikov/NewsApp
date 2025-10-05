@@ -1,4 +1,6 @@
-export default function Categories({ onSelect, active }) {
+import { type CategoriesProps } from "../types/interfaces.ts";
+
+const Categories: React.FC<CategoriesProps> = ({ onSelect, active }) => {
   const categories = [
     "World",
     "Nation",
@@ -23,4 +25,6 @@ export default function Categories({ onSelect, active }) {
       ))}
     </section>
   );
-}
+};
+
+export default Categories;

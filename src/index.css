@@ -368,3 +368,21 @@ body {
 .currency__results {
   color: #ccc;
 }
+
+.error {
+  grid-column: 1 / -1;
+  justify-self: center; 
+}
+
+.error__title {
+  color: #fff;
+}
+
+.news-list__empty {
+  grid-column: 1 / -1;
+  justify-self: center; 
+}
+
+.news-list__empty__title {
+  color: #fff;
+}
