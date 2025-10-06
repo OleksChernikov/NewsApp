@@ -1,4 +1,12 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "./state/hooks.ts";
+import {
+  fetchNews,
+  setActiveCategory,
+  setActiveArticle,
+  clearActiveArticle,
+} from "./state/newsSlice.ts";
+
 import Header from "./components/Header.tsx";
 import Loader from "./components/Loader.tsx";
 import Categories from "./components/Categories.tsx";
@@ -7,46 +15,16 @@ import Search from "./components/Search.tsx";
 import ExchangeRates from "./components/ExchangeRates.tsx";
 import Error from "./components/Error.tsx";
 import Empty from "./components/Empty.tsx";
-import { getNews } from "./services/newsService.ts";
-import { type Article, type FetchParams } from "./types/interfaces.ts";
+import Footer from "./components/Footer.tsx";
 
 export default function NewsApp() {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string>("");
-  const [activeArticle, setActiveArticle] = useState<Article | null>(null);
-  const [activeCategory, setActiveCategory] = useState<string>("");
-
-  const fetchNews = async (params: FetchParams) => {
-    setLoading(true);
-    setError("");
-
-    try {
-      const data = await getNews(params);
-      setArticles(data.articles || []);
-    } catch (e: any) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const dispatch = useAppDispatch();
+  const { articles, loading, error, activeCategory, activeArticle } =
+    useAppSelector((s) => s.news);
 
   useEffect(() => {
-    fetchNews({ q: "news" });
-  }, []);
-
-  const handleReadMore = (article: Article) => setActiveArticle(article);
-  const closeModal = () => setActiveArticle(null);
-
-  const footerLinks: string[] = [
-    "tsn.ua/en",
-    "bbc.com/news",
-    "edition.cnn.com",
-    "news.sky.com/world",
-    "nbcnews.com/world",
-    "abcnews.go.com/international",
-    "foxnews.com",
-  ];
+    dispatch(fetchNews({ q: "news" }));
+  }, [dispatch]);
 
   return (
     <div className="site background">
@@ -56,11 +34,11 @@ export default function NewsApp() {
         <main className="site__main main">
           <div className="main__controls">
             <ExchangeRates />
-            <Search onSearch={(q) => fetchNews({ q })} />
+            <Search onSearch={(q) => dispatch(fetchNews({ q }))} />
             <Categories
               onSelect={(cat) => {
-                setActiveCategory(cat);
-                fetchNews({ category: cat });
+                dispatch(setActiveCategory(cat));
+                dispatch(fetchNews({ category: cat }));
               }}
               active={activeCategory}
             />
@@ -69,21 +47,24 @@ export default function NewsApp() {
           <section className="main__news news-list">
             {loading ? (
               <Loader />
-            ) : articles.length === 0 ? (
-              <Empty/>
             ) : error ? (
-              <Error/>
+              <Error />
+            ) : articles.length === 0 ? (
+              <Empty />
             ) : (
               articles.map((a, i) => (
                 <div className="news-list__item" key={i}>
-                  <NewsCard article={a} onReadMore={() => handleReadMore(a)} />
+                  <NewsCard
+                    article={a}
+                    onReadMore={() => dispatch(setActiveArticle(a))}
+                  />
                 </div>
               ))
             )}
           </section>
 
           {activeArticle && (
-            <div className="modal" onClick={closeModal}>
+            <div className="modal" onClick={() => dispatch(clearActiveArticle())}>
               <div
                 className="modal__content"
                 onClick={(e) => e.stopPropagation()}
@@ -103,32 +84,14 @@ export default function NewsApp() {
                     {activeArticle.source?.name}
                   </a>
                 </p>
-                <button onClick={closeModal}>Close</button>
+                <button onClick={() => dispatch(clearActiveArticle())}>
+                  Close
+                </button>
               </div>
             </div>
           )}
         </main>
-
-        <footer className="site__footer footer">
-          <h6 className="site__footer__title">Partner Links</h6>
-          <div className="footer__links">
-            {footerLinks.map((url) => {
-              const text = url.split(".")[0]?.toUpperCase() || "LINK";
-              return (
-                <a
-                  key={url}
-                  href={`https://${url}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="footer__col"
-                >
-                  <span className="footer__links__text">{text}</span>
-                </a>
-              );
-            })}
-          </div>
-          <div className="footer__copy">© {new Date().getFullYear()} Web News</div>
-        </footer>
+        <Footer/>
       </div>
     </div>
   );
